@@ -44,7 +44,7 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
             bottom-1
             right-0.5
             w-1/4
-            h-auto
+            h-1/4
           `}
         />
       ) : null}

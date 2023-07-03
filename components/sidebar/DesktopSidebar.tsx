@@ -1,6 +1,5 @@
 "use client";
 import useRoutes from "@/app/hooks/useRoutes";
-import { useState } from "react";
 import DesktopItem from "@/components/sidebar/DesktopItem";
 import { signOut } from "next-auth/react";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
@@ -19,7 +18,7 @@ interface DesktopSidebarProps {
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
   const routes = useRoutes();
-  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div
       className="
@@ -53,28 +52,23 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
           ))}
         </ul>
       </nav>
-      <div
-        onClick={() => setIsOpen(true)}
-        className="cursor-pointer hover:opacity-75 transition"
-      >
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button>
-              <Avatar width={48} height={48} user={currentUser} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" sideOffset={15} className="w-56">
-            <DropdownMenuItem
-              onClick={() => {
-                signOut();
-              }}
-            >
-              <HiArrowLeftOnRectangle size={16} className="mr-2" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button>
+            <Avatar width={48} height={48} user={currentUser} />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" sideOffset={15} className="w-56">
+          <DropdownMenuItem
+            onClick={() => {
+              signOut();
+            }}
+          >
+            <HiArrowLeftOnRectangle size={16} className="mr-2" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

@@ -50,8 +50,6 @@ const MessageItem: React.FC<MessageItemProps> = ({
     return format(date, isToday(date) ? "p" : "EEEE p");
   };
 
-  console.log(data);
-
   return (
     <div className={container}>
       {!isPreviousSameUser && !isOwnMessage && <Avatar user={data.sender} />}
