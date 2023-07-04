@@ -11,6 +11,8 @@ import { isSameMinute } from "date-fns";
 import { User } from "@prisma/client";
 import Avatar from "@/components/Avatar";
 import { useSession } from "next-auth/react";
+import TypingIndicator from "@/app/conversations/[conversationId]/components/TypingIndicator";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
@@ -82,7 +84,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   }, [conversationId]);
 
   return (
-    <div className="flex-1 bg-[#f5f5f5] overflow-y-auto p-4 relative">
+    <div className="flex-1 bg-[#f5f5f5] overflow-y-auto p-4">
       {messages.map((message, index) => (
         <MessageItem
           isLast={index === messages.length - 1}
@@ -99,11 +101,27 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
         />
       ))}
       <div className="pt-24" ref={bottomRef} />
-      {userTyping && isNotOwnUserTyping && (
-        <div className={`absolute left-16 bottom-0 w-fit`}>
-          <Avatar user={userTyping!} />
-        </div>
-      )}
+      <AnimatePresence>
+        {userTyping && isNotOwnUserTyping && (
+          <motion.div
+            layout
+            initial={{
+              y: 30,
+            }}
+            animate={{
+              y: 0,
+            }}
+            exit={{
+              y: 50,
+            }}
+            className="absolute left-16 bottom-0 w-fit flex items-center gap-2"
+          >
+            <Avatar user={userTyping!} />
+            <span className="text-gray-500 text-sm">{userTyping?.name}</span>
+            <TypingIndicator />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

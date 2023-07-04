@@ -39,7 +39,7 @@ const Form = () => {
     });
   };
 
-  const onInputChange = throttle((ev: any) => {
+  const onInputChange = throttle(() => {
     axios.post("/api/messages/istyping", {
       conversationId,
     });
@@ -53,7 +53,7 @@ const Form = () => {
   }, [conversationId]);
 
   return (
-    <div className="px-6 py-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full">
+    <div className="px-6 py-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full z-10">
       <CldUploadButton
         options={{
           maxFiles: 1,

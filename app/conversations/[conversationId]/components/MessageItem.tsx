@@ -4,7 +4,6 @@ import { FullMessageType } from "@/app/types";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import Avatar from "@/components/Avatar";
-import Image from "next/image";
 import { HiMiniEye, HiOutlineCheckCircle } from "react-icons/hi2";
 import {
   Tooltip,
@@ -12,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { format, isToday } from "date-fns";
+import MessageBody from "@/app/conversations/[conversationId]/components/MessageBody";
 
 interface MessageItemProps {
   data: FullMessageType;
@@ -106,23 +106,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
         <div className="flex gap-1 items-end">
           <div className={message}>
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
-            {data.image ? (
-              <Image
-                alt="Image"
-                height="100"
-                width="100"
-                src={data.image}
-                className="
-            object-cover
-            cursor-pointer
-            hover:scale-110
-            transition
-            translate
-          "
-              />
-            ) : (
-              <div>{data.body}</div>
-            )}
+            <MessageBody data={data} />
           </div>
           {!isLast && isOwnMessage && <div className="w-4 h4"></div>}
           {isLast && isOwnMessage && seenList.length === 0 && (
