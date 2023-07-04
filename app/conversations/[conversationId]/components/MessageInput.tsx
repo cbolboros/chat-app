@@ -9,6 +9,7 @@ interface MessageInputProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  onInputChange: (ev: any) => void;
 }
 const MessageInput: React.FC<MessageInputProps> = ({
   id,
@@ -17,6 +18,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   required,
   register,
   errors,
+  onInputChange,
 }) => {
   return (
     <div className="relative w-full">
@@ -25,6 +27,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         type={type}
         placeholder={placeholder}
         required={required}
+        onKeyDown={onInputChange}
         {...register(id, { required })}
         className="text-black font-light py-2 px-4 bg-neutral-100 w-full rounded-md focus:outline-none"
       />

@@ -15,6 +15,9 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
   const { members } = useActiveList();
   const isActive = members.indexOf(user?.email!) !== -1;
 
+  const avatarWidth = Math.round((width || 32) / 4);
+  const avatarHeight = Math.round((width || 32) / 4);
+
   return (
     <div className="relative">
       <div
@@ -34,6 +37,10 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
       </div>
       {isActive ? (
         <span
+          style={{
+            width: `${avatarWidth}px`,
+            height: `${avatarHeight}px`,
+          }}
           className={`
             absolute
             block
@@ -43,8 +50,6 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
             ring-white
             bottom-1
             right-0.5
-            w-1/4
-            h-1/4
           `}
         />
       ) : null}

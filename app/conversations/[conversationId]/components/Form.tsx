@@ -6,6 +6,9 @@ import axios from "axios";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "@/app/conversations/[conversationId]/components/MessageInput";
 import { CldUploadButton } from "next-cloudinary";
+import { useEffect } from "react";
+import { pusherClient } from "@/lib/pusher";
+import { throttle } from "lodash";
 
 const Form = () => {
   const { conversationId } = useConversation();
@@ -35,6 +38,20 @@ const Form = () => {
       conversationId,
     });
   };
+
+  const onInputChange = throttle((ev: any) => {
+    axios.post("/api/messages/istyping", {
+      conversationId,
+    });
+  }, 400);
+
+  useEffect(() => {
+    pusherClient.subscribe(conversationId);
+    return () => {
+      pusherClient.unsubscribe(conversationId);
+    };
+  }, [conversationId]);
+
   return (
     <div className="px-6 py-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full">
       <CldUploadButton
@@ -52,6 +69,7 @@ const Form = () => {
       >
         <MessageInput
           id="message"
+          onInputChange={onInputChange}
           register={register}
           errors={errors}
           required
