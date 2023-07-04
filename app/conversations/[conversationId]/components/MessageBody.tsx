@@ -1,15 +1,30 @@
 import { FullMessageType } from "@/app/types";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 const MessageBody = ({ data }: { data: FullMessageType }) => {
   const parseMessageBody = () => {
-    if (data.body && data.body.startsWith("http")) {
-      return (
-        <Link target="_blank" className="underline" href={data.body}>
-          {data.body}
-        </Link>
-      );
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    let copyOfData = data.body || "";
+    if (copyOfData.includes("http")) {
+      copyOfData = copyOfData.replace(urlRegex, "{0}");
+      return copyOfData.split(" ").map((item, index) => {
+        if (item.includes("{0}")) {
+          return (
+            <span key={index}>
+              <Link
+                className="underline"
+                target="_blank"
+                href={data.body?.split(" ")[index] || "/"}
+              >
+                {data.body?.split(" ")[index]}
+              </Link>
+              &nbsp;
+            </span>
+          );
+        }
+        return <span key={index}>{item}&nbsp;</span>;
+      });
     }
     if (data.image) {
       return (
@@ -19,9 +34,8 @@ const MessageBody = ({ data }: { data: FullMessageType }) => {
           width="100"
           src={data.image}
           className="
-            object-cover
+            object-fit
             cursor-pointer
-            hover:scale-110
             transition
             translate
           "

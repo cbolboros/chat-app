@@ -8,11 +8,6 @@ import axios from "axios";
 import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
 import { isSameMinute } from "date-fns";
-import { User } from "@prisma/client";
-import Avatar from "@/components/Avatar";
-import { useSession } from "next-auth/react";
-import TypingIndicator from "@/app/conversations/[conversationId]/components/TypingIndicator";
-import { AnimatePresence, motion } from "framer-motion";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
@@ -21,20 +16,13 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   const [messages, setMessages] = useState(initialMessages);
 
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [userTyping, setUserTyping] = useState<User | null>(null);
   const { conversationId } = useConversation();
-
-  const session = useSession();
-
-  const isNotOwnUserTyping = userTyping?.email !== session.data?.user?.email;
 
   useEffect(() => {
     axios.post(`/api/conversations/${conversationId}/seen`);
   }, [conversationId]);
 
   useEffect(() => {
-    // @ts-ignore
-    let typingTimer;
     pusherClient.subscribe(conversationId);
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -62,24 +50,13 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
       );
     };
 
-    const userTypingHandler = (user: User) => {
-      setUserTyping(user);
-      // @ts-ignore
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => setUserTyping(null), 1000);
-    };
-
     pusherClient.bind("messages:new", messageHandler);
     pusherClient.bind("message:update", updateMessageHandler);
-    pusherClient.bind("user:typing", userTypingHandler);
 
     return () => {
-      // @ts-ignore
-      clearTimeout(typingTimer);
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
-      pusherClient.unbind("user:typing", userTypingHandler);
     };
   }, [conversationId]);
 
@@ -101,27 +78,6 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
         />
       ))}
       <div className="pt-24" ref={bottomRef} />
-      <AnimatePresence>
-        {userTyping && isNotOwnUserTyping && (
-          <motion.div
-            layout
-            initial={{
-              y: 30,
-            }}
-            animate={{
-              y: 0,
-            }}
-            exit={{
-              y: 50,
-            }}
-            className="absolute left-16 bottom-0 w-fit flex items-center gap-2"
-          >
-            <Avatar user={userTyping!} />
-            <span className="text-gray-500 text-sm">{userTyping?.name}</span>
-            <TypingIndicator />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

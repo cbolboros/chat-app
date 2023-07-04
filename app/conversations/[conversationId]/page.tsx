@@ -25,11 +25,9 @@ const ChatId = async ({ params }: { params: IParams }) => {
 
   return (
     <div className="lg:pl-80 h-full">
-      <div className="h-full flex flex-col">
-        <div className="relative flex flex-col flex-1">
-          <Header conversation={conversation} />
-          <Body initialMessages={messages} />
-        </div>
+      <div className="h-full flex flex-col overflow-hidden">
+        <Header conversation={conversation} />
+        <Body initialMessages={messages} />
         <Form />
       </div>
     </div>

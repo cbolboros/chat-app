@@ -34,11 +34,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
     .filter((user) => user.email !== data?.sender?.email)
     .map((user) => user.name)
     .join(", ");
-  const container = clsx(
-    "flex gap-3 pb-1",
-    isOwnMessage && "justify-end",
-    !isOwnMessage && "items-end"
-  );
+  const container = clsx("flex gap-3 pb-1", isOwnMessage && "justify-end");
   const body = clsx("flex flex-col", isOwnMessage && "items-end");
   const message = clsx(
     "flex text-sm w-fit overflow-hidden",

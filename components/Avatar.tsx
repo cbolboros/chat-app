@@ -19,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
   const avatarHeight = Math.round((width || 32) / 4);
 
   return (
-    <div className="relative">
+    <div className="relative h-fit">
       <div
         className="
         relative
