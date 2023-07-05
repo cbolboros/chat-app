@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-[100vh] overflow-hidden`}>
+      <body className={`${inter.className} h-[100vh]`}>
         <AuthContext>
           <SkeletonTheme>
             <Toaster />

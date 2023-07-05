@@ -24,23 +24,31 @@ import axios from "axios";
 
 type Variant = "LOGIN" | "REGISTER";
 
-const FormSchema = z.object({
-  name: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .optional(),
-  email: z.string().email(),
-  password: z.string().min(5, { message: "Minimum 5 characters." }),
-});
-
 export function InputForm() {
   const session = useSession();
   const router = useRouter();
   const { toast } = useToast();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const FormSchema = z.object({
+    name: z
+      .string()
+      .min(2, {
+        message: "Username must be at least 2 characters.",
+      })
+      .optional()
+      .refine((data) => {
+        if (variant === "LOGIN") {
+          return true;
+        }
+        if (variant === "REGISTER") {
+          return false;
+        }
+      }, "Required"),
+    email: z.string().email(),
+    password: z.string().min(5, { message: "Minimum 5 characters." }),
+  });
 
   useEffect(() => {
     if (session?.status === "authenticated") {
