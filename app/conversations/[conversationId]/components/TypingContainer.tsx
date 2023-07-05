@@ -8,6 +8,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "@/components/Avatar";
 import TypingIndicator from "@/app/conversations/[conversationId]/components/TypingIndicator";
 
+export interface TypingHandlerProps {
+  currentUser: User;
+  conversationId: string;
+}
 const TypingContainer = () => {
   const { conversationId } = useConversation();
   const session = useSession();
@@ -19,8 +23,9 @@ const TypingContainer = () => {
     // @ts-ignore
     let typingTimer;
     pusherClient.subscribe(conversationId);
-    const userTypingHandler = (user: User) => {
-      setUserTyping(user);
+    const userTypingHandler = (data: TypingHandlerProps) => {
+      if (data.conversationId !== conversationId) return;
+      setUserTyping(data.currentUser);
       // @ts-ignore
       clearTimeout(typingTimer);
       typingTimer = setTimeout(() => setUserTyping(null), 1000);

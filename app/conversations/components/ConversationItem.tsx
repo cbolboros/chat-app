@@ -65,7 +65,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
 
   const lastMessageText = useMemo(() => {
     if (isTyping) {
-      return <TypingIndicator />;
+      return <TypingIndicator width={8} height={8} />;
     }
     if (lastMessage?.image) {
       return "Sent an image";
@@ -123,17 +123,24 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
               </p>
             )}
           </div>
-          <p
-            className={clsx(
-              `
+          {!isTyping && (
+            <p
+              className={clsx(
+                `
               truncate 
               text-xs
               `,
-              hasSeen ? "text-gray-500" : "text-black font-medium"
-            )}
-          >
-            {lastMessageText}
-          </p>
+                hasSeen ? "text-gray-500" : "text-black font-medium"
+              )}
+            >
+              {lastMessageText}
+            </p>
+          )}
+          {isTyping && (
+            <div className="h-4 flex items-center">
+              <TypingIndicator width={6} height={6} />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

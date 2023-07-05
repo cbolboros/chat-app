@@ -6,7 +6,6 @@ import useConversation from "@/app/hooks/useConversation";
 import MessageItem from "@/app/conversations/[conversationId]/components/MessageItem";
 import axios from "axios";
 import { pusherClient } from "@/lib/pusher";
-import { find } from "lodash";
 import { isSameMinute } from "date-fns";
 
 interface BodyProps {
@@ -28,7 +27,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
 
     const messageHandler = (message: FullMessageType) => {
       setMessages((current) => {
-        if (find(current, { id: message.id })) {
+        if (current.find((current) => current.id === message.id)) {
           return current;
         }
         return [...current, message];
