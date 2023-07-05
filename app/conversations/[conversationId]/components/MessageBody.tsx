@@ -16,9 +16,13 @@ const MessageBody = ({ data }: { data: FullMessageType }) => {
     let copyOfData = data.body || "";
     if (copyOfData.includes("http")) {
       copyOfData = copyOfData.replace(urlRegex, "{0}");
-      return copyOfData.split(" ").map((item, index) => {
+      const youtubeLinks: string[] = [];
+      const bodyItems = copyOfData.split(" ").map((item, index) => {
         let items = data.body?.split(" ") || [];
         if (item.includes("{0}")) {
+          if (items[index].includes("www.youtube.com")) {
+            youtubeLinks.push(items[index]);
+          }
           return (
             <span key={index}>
               <Link
@@ -28,14 +32,16 @@ const MessageBody = ({ data }: { data: FullMessageType }) => {
               >
                 {items[index]}
               </Link>
-              {items[index].includes("www.youtube.com") && (
-                <YouTube videoId={getYoutubeId(items[index]) || ""} />
-              )}
+              &nbsp;
             </span>
           );
         }
         return <span key={index}>{item}&nbsp;</span>;
       });
+      if (youtubeLinks.length > 0) {
+        bodyItems.push(<YouTube videoId={getYoutubeId(youtubeLinks[0])} />);
+      }
+      return bodyItems;
     }
     if (data.image) {
       return (
