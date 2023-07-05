@@ -4,6 +4,7 @@ import getMessages from "@/app/actions/getMessages";
 import Header from "@/app/conversations/[conversationId]/components/Header";
 import Body from "@/app/conversations/[conversationId]/components/Body";
 import Form from "@/app/conversations/[conversationId]/components/Form";
+import TypingContainer from "@/app/conversations/[conversationId]/components/TypingContainer";
 
 interface IParams {
   conversationId: string;
@@ -25,10 +26,11 @@ const ChatId = async ({ params }: { params: IParams }) => {
 
   return (
     <div className="lg:pl-80 h-full">
-      <div className="h-full flex flex-col overflow-hidden">
+      <div className="h-full flex flex-col overflow-hidden relative">
         <Header conversation={conversation} />
         <Body initialMessages={messages} />
         <Form />
+        <TypingContainer />
       </div>
     </div>
   );

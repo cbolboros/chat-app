@@ -9,15 +9,18 @@ import clsx from "clsx";
 import { FullConversationType } from "@/app/types";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/components/Avatar";
+import TypingIndicator from "@/app/conversations/[conversationId]/components/TypingIndicator";
 
 interface ConversationItemProps {
   data: FullConversationType;
   selected?: boolean;
+  isTyping?: boolean;
 }
 
 const ConversationItem: React.FC<ConversationItemProps> = ({
   data,
   selected,
+  isTyping,
 }) => {
   const otherUser = useOtherUser(data);
   const session = useSession();
@@ -61,6 +64,9 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   }, [userEmail, lastMessage]);
 
   const lastMessageText = useMemo(() => {
+    if (isTyping) {
+      return <TypingIndicator />;
+    }
     if (lastMessage?.image) {
       return "Sent an image";
     }

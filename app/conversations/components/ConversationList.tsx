@@ -9,6 +9,7 @@ import ConversationItem from "@/app/conversations/components/ConversationItem";
 import { useSession } from "next-auth/react";
 import { pusherClient } from "@/lib/pusher";
 import EmptyConversationList from "@/app/conversations/components/EmptyConversationList";
+import { User } from "@prisma/client";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -19,6 +20,8 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const session = useSession();
   const [items, setItems] = useState<FullConversationType[]>(initialItems);
   const router = useRouter();
+  const [userTyping, setUserTyping] = useState<User | null>(null);
+  const isNotOwnUserTyping = userTyping?.email !== session.data?.user?.email;
 
   const { conversationId, isOpen } = useConversation();
 
@@ -29,7 +32,11 @@ const ConversationList: React.FC<ConversationListProps> = ({
   useEffect(() => {
     if (!pusherKey) return;
 
+    // @ts-ignore
+    let typingTimer;
+
     pusherClient.subscribe(pusherKey);
+    pusherClient.subscribe(conversationId);
 
     const newConversationHandler = (conversation: FullConversationType) => {
       setItems((current) => {
@@ -69,16 +76,26 @@ const ConversationList: React.FC<ConversationListProps> = ({
         router.push("/conversations");
       }
     };
+    const userTypingHandler = (user: User) => {
+      setUserTyping(user);
+      // @ts-ignore
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => setUserTyping(null), 1000);
+    };
 
     pusherClient.bind("conversations:new", newConversationHandler);
     pusherClient.bind("conversations:update", updateConversationHandler);
     pusherClient.bind("conversations:remove", removeConversationHandler);
+    pusherClient.bind("user:typing", userTypingHandler);
 
     return () => {
       pusherClient.unsubscribe(pusherKey);
+      pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("conversations:new", newConversationHandler);
       pusherClient.unbind("conversations:update", updateConversationHandler);
       pusherClient.unbind("conversations:remove", removeConversationHandler);
+      // @ts-ignore
+      clearTimeout(typingTimer);
     };
   }, [pusherKey, conversationId, router]);
 
@@ -112,6 +129,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
             <ConversationItem
               key={item.id}
               data={item}
+              isTyping={userTyping! && isNotOwnUserTyping}
               selected={conversationId === item.id}
             />
           ))
