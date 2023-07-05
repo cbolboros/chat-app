@@ -19,6 +19,7 @@ interface MessageItemProps {
   isPreviousSameUser?: boolean;
   isNextSameUser?: boolean;
   isMessageSameMinute?: boolean;
+  bottomRef?: React.RefObject<HTMLDivElement>;
 }
 const MessageItem: React.FC<MessageItemProps> = ({
   data,
@@ -26,6 +27,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
   isPreviousSameUser,
   isNextSameUser,
   isMessageSameMinute,
+  bottomRef,
 }) => {
   const session = useSession();
 
@@ -102,7 +104,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
         <div className="flex gap-1 items-end">
           <div className={message}>
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
-            <MessageBody data={data} />
+            <MessageBody data={data} bottomRef={bottomRef} />
           </div>
           {!isLast && isOwnMessage && <div className="w-4 h4"></div>}
           {isLast && isOwnMessage && seenList.length === 0 && (

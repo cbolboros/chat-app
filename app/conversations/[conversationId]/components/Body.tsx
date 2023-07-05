@@ -78,6 +78,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
           )}
           key={message.id}
           data={message}
+          bottomRef={bottomRef}
         />
       ))}
       <div className="pt-2" ref={bottomRef} />
