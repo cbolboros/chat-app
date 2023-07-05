@@ -15,26 +15,35 @@ const useActiveChannel = () => {
       setActiveChannel(channel);
     }
 
-    channel.bind("pusher:subscription_succeeded", (members: Members) => {
+    const setInitialMembers = (members: Members) => {
       const initialMembers: string[] = [];
 
       members.each((member: Record<string, any>) =>
         initialMembers.push(member.id)
       );
       set(initialMembers);
-    });
+    };
 
-    channel.bind("pusher:member_added", (member: Record<string, any>) => {
+    const addMember = (member: Record<string, any>) => {
       add(member.id);
-    });
+    };
 
-    channel.bind("pusher:member_removed", (member: Record<string, any>) => {
+    const removeMember = (member: Record<string, any>) => {
       remove(member.id);
-    });
+    };
+
+    channel.bind("pusher:subscription_succeeded", setInitialMembers);
+
+    channel.bind("pusher:member_added", addMember);
+
+    channel.bind("pusher:member_removed", removeMember);
 
     return () => {
       if (activeChannel) {
         pusherClient.unsubscribe("presence-messenger");
+        channel?.unbind("pusher:subscription_succeeded", setInitialMembers);
+        channel?.unbind("pusher:member_added", addMember);
+        channel?.unbind("pusher:member_removed", removeMember);
         setActiveChannel(null);
       }
     };

@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import AuthContext from "@/app/context/AuthContext";
 import ActiveStatus from "@/components/ActiveStatus";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} h-[100vh] overflow-hidden`}>
         <AuthContext>
-          <Toaster />
-          <ActiveStatus />
-          <TooltipProvider>{children}</TooltipProvider>
+          <SkeletonTheme>
+            <Toaster />
+            <ActiveStatus />
+            <TooltipProvider>{children}</TooltipProvider>
+          </SkeletonTheme>
         </AuthContext>
       </body>
     </html>
