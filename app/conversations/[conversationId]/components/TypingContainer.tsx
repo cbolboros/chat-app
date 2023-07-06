@@ -44,7 +44,6 @@ const TypingContainer = () => {
       <AnimatePresence>
         {userTyping && isNotOwnUserTyping && (
           <motion.div
-            layout
             initial={{
               y: 30,
               opacity: 0,

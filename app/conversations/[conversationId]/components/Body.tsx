@@ -7,6 +7,7 @@ import MessageItem from "@/app/conversations/[conversationId]/components/Message
 import axios from "axios";
 import { pusherClient } from "@/lib/pusher";
 import { isSameMinute } from "date-fns";
+import ScrollToBottomContainer from "@/app/conversations/[conversationId]/components/ScrollToBottomContainer";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
@@ -15,6 +16,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   const [messages, setMessages] = useState(initialMessages);
 
   const bottomRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const { conversationId } = useConversation();
 
   useEffect(() => {
@@ -63,25 +65,30 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 bg-[#f5f5f5] overflow-y-auto p-4">
-      {messages.map((message, index) => (
-        <MessageItem
-          isLast={index === messages.length - 1}
-          isNextSameUser={messages[index + 1]?.sender?.id === message.sender.id}
-          isPreviousSameUser={
-            messages[index - 1]?.sender?.id === message.sender.id
-          }
-          isMessageSameMinute={isSameMinute(
-            new Date(messages[index - 1]?.createdAt),
-            new Date(message.createdAt)
-          )}
-          key={message.id}
-          data={message}
-          bottomRef={bottomRef}
-        />
-      ))}
-      <div className="pt-2" ref={bottomRef} />
-    </div>
+    <>
+      <div className="flex-1 bg-[#f5f5f5] overflow-y-auto p-4" ref={bodyRef}>
+        {messages.map((message, index) => (
+          <MessageItem
+            isLast={index === messages.length - 1}
+            isNextSameUser={
+              messages[index + 1]?.sender?.id === message.sender.id
+            }
+            isPreviousSameUser={
+              messages[index - 1]?.sender?.id === message.sender.id
+            }
+            isMessageSameMinute={isSameMinute(
+              new Date(messages[index - 1]?.createdAt),
+              new Date(message.createdAt)
+            )}
+            key={message.id}
+            data={message}
+            bottomRef={bottomRef}
+          />
+        ))}
+        <div className="pt-2" ref={bottomRef} />
+      </div>
+      <ScrollToBottomContainer bodyRef={bodyRef} />
+    </>
   );
 };
 
