@@ -6,6 +6,7 @@ import ActiveStatus from "@/components/ActiveStatus";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <SkeletonTheme>
             <Toaster />
             <ActiveStatus />
+            <NextTopLoader color="black" showSpinner={false} />
             <TooltipProvider>{children}</TooltipProvider>
           </SkeletonTheme>
         </AuthContext>
