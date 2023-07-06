@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { format, isToday } from "date-fns";
+import { format, isThisYear, isToday } from "date-fns";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
 
@@ -64,9 +64,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   }, [userEmail, lastMessage]);
 
   const lastMessageText = useMemo(() => {
-    if (isTyping) {
-      return <TypingIndicator width={8} height={8} />;
-    }
     if (lastMessage?.image) {
       return "Sent an image";
     }
@@ -92,12 +89,11 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         items-center 
         space-x-3 
         p-3 
-        hover:bg-neutral-100
         rounded-lg
         transition
         cursor-pointer
         `,
-        selected ? "bg-neutral-100" : "bg-white"
+        selected ? "bg-neutral-100" : "bg-white hover:bg-neutral-50"
       )}
     >
       <Avatar user={otherUser} />
@@ -114,11 +110,16 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
                   text-xs
                   text-gray-400
                   font-light
+                  pl-1
                 "
               >
                 {format(
-                  new Date(lastMessage.createdAt),
-                  isToday(new Date(lastMessage.createdAt)) ? "p" : "dd-EE"
+                  new Date(lastMessage?.createdAt),
+                  isToday(new Date(lastMessage?.createdAt))
+                    ? "p"
+                    : isThisYear(new Date(lastMessage?.createdAt))
+                    ? "dd-MMM"
+                    : "dd-MMM-yy"
                 )}
               </p>
             )}

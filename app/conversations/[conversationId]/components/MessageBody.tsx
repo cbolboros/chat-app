@@ -74,7 +74,9 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
     return <>{bodyItems}</>;
   };
 
-  return <div className="w-full">{parseMessageBody()}</div>;
+  return (
+    <div className="w-full text-gray-800 font-light">{parseMessageBody()}</div>
+  );
 };
 
 export default MessageBody;

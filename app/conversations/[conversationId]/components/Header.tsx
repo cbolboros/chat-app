@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
+            <Button size="icon" variant="ghost">
               <HiEllipsisHorizontal size={24} />
             </Button>
           </DropdownMenuTrigger>

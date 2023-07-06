@@ -37,14 +37,16 @@ const MessageItem: React.FC<MessageItemProps> = ({
     .map((user) => user.name)
     .join(", ");
   const container = clsx(
-    "flex gap-3 pb-1",
+    "flex gap-3",
+    isNextSameUser && "mb-0.5",
+    !isNextSameUser && "pb-1",
     isOwnMessage && "justify-end",
     !isMessageSameMinute && "pt-2"
   );
   const body = clsx("flex flex-col max-w-[75%]", isOwnMessage && "items-end");
   const message = clsx(
     "text-sm w-fit overflow-hidden",
-    isOwnMessage ? "bg-slate-200" : "bg-white",
+    isOwnMessage ? "bg-[#e8ebfa] ml-auto" : "bg-white",
     data.image ? "rounded-md p-0" : "rounded-md py-2 px-3"
   );
 
@@ -83,7 +85,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         )}
         {isPreviousSameUser && (
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2">
             {!isMessageSameMinute && !isOwnMessage && (
               <div className="text-xs text-gray-500">{data.sender.name}</div>
             )}
