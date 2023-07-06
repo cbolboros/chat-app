@@ -36,10 +36,14 @@ const MessageItem: React.FC<MessageItemProps> = ({
     .filter((user) => user.email !== data?.sender?.email)
     .map((user) => user.name)
     .join(", ");
-  const container = clsx("flex gap-3 pb-1", isOwnMessage && "justify-end");
-  const body = clsx("flex flex-col", isOwnMessage && "items-end");
+  const container = clsx(
+    "flex gap-3 pb-1",
+    isOwnMessage && "justify-end",
+    !isMessageSameMinute && "pt-2"
+  );
+  const body = clsx("flex flex-col max-w-[75%]", isOwnMessage && "items-end");
   const message = clsx(
-    "flex text-sm w-fit overflow-hidden",
+    "text-sm w-fit overflow-hidden",
     isOwnMessage ? "bg-slate-200" : "bg-white",
     data.image ? "rounded-md p-0" : "rounded-md py-2 px-3"
   );
@@ -54,9 +58,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
       {isPreviousSameUser && !isOwnMessage && <div className="w-8"></div>}
       <div className={body}>
         {!isPreviousSameUser && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mb-1">
             {!isOwnMessage && (
-              <div className="text-xs text-gray-500">{data.sender.name}</div>
+              <div className="text-xs text-gray-500 truncate">
+                {data.sender.name}
+              </div>
             )}
             <div className="text-xs text-gray-500">
               <Tooltip>
@@ -77,7 +83,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
           </div>
         )}
         {isPreviousSameUser && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mb-1">
             {!isMessageSameMinute && !isOwnMessage && (
               <div className="text-xs text-gray-500">{data.sender.name}</div>
             )}
@@ -101,7 +107,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
             <div className="w-4"></div>
           </div>
         )}
-        <div className="flex gap-1 items-end">
+        <div className="flex gap-1 w-full items-end">
           <div className={message}>
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
             <MessageBody data={data} bottomRef={bottomRef} />

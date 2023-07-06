@@ -42,11 +42,17 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
 
   const parseMessageBody = () => {
     const { bodyItems, youtubeLinks } = parseHttpLinks();
+    const iFrameOptions = {
+      width: "100%",
+      height: "100%",
+    };
 
     if (youtubeLinks.length > 0) {
       bodyItems.push(
         <YouTube
           key="youtube-video"
+          className="max-w-full aspect-video"
+          opts={iFrameOptions}
           onReady={() => {
             bottomRef?.current?.scrollIntoView();
           }}
@@ -65,10 +71,10 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       );
     }
 
-    return <div>{bodyItems}</div>;
+    return <>{bodyItems}</>;
   };
 
-  return <div>{parseMessageBody()}</div>;
+  return <div className="w-full">{parseMessageBody()}</div>;
 };
 
 export default MessageBody;
