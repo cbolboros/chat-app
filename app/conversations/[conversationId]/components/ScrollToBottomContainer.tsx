@@ -12,6 +12,7 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
   const [isShowScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
+    let current = bodyRef.current;
     const scrollHandler = throttle((e: any) => {
       if (e.target.scrollTopMax - e.target.scrollTop > 200) {
         setShowScrollButton(true);
@@ -19,9 +20,9 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
         setShowScrollButton(false);
       }
     }, 200);
-    bodyRef?.current?.addEventListener("scroll", scrollHandler);
+    current?.addEventListener("scroll", scrollHandler);
     return () => {
-      bodyRef?.current?.removeEventListener("scroll", scrollHandler);
+      current?.removeEventListener("scroll", scrollHandler);
     };
   }, [bodyRef]);
   return (
