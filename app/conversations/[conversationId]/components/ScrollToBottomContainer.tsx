@@ -14,9 +14,12 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
   useEffect(() => {
     let current = bodyRef.current;
     const scrollHandler = throttle((e: any) => {
-      if (e.target.scrollTopMax - e.target.scrollTop > 200) {
-        setShowScrollButton(true);
-      } else {
+      if (
+        !isShowScrollButton &&
+        e.target.scrollTopMax - e.target.scrollTop > 200
+      ) {
+        setShowScrollButton(e.target.scrollTopMax - e.target.scrollTop > 200);
+      } else if (isShowScrollButton) {
         setShowScrollButton(false);
       }
     }, 200);
@@ -24,7 +27,7 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
     return () => {
       current?.removeEventListener("scroll", scrollHandler);
     };
-  }, [bodyRef]);
+  }, [bodyRef, isShowScrollButton]);
   return (
     <div className="absolute bottom-20 flex w-full justify-center">
       <AnimatePresence>
