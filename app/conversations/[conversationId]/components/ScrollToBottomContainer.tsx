@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { throttle } from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { HiArrowDownCircle } from "react-icons/hi2";
 
 interface ScrollToBottomContainerProps {
   bodyRef: React.RefObject<HTMLDivElement>;
@@ -14,15 +14,10 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
   useEffect(() => {
     let current = bodyRef.current;
     const scrollHandler = throttle((e: any) => {
-      if (
-        !isShowScrollButton &&
-        e.target.scrollTopMax - e.target.scrollTop > 200
-      ) {
-        setShowScrollButton(e.target.scrollTopMax - e.target.scrollTop > 200);
-      } else if (
-        isShowScrollButton &&
-        e.target.scrollTopMax - e.target.scrollTop < 200
-      ) {
+      const height = e.target.scrollHeight - e.target.clientHeight;
+      if (!isShowScrollButton && height - e.target.scrollTop > 200) {
+        setShowScrollButton(true);
+      } else if (isShowScrollButton && height - e.target.scrollTop < 200) {
         setShowScrollButton(false);
       }
     }, 200);
@@ -32,33 +27,30 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
     };
   }, [bodyRef, isShowScrollButton]);
   return (
-    <div className="absolute bottom-20 flex w-full justify-center">
+    <div className="absolute bottom-20 flex w-full">
       <AnimatePresence>
         {isShowScrollButton && (
           <motion.div
             initial={{
-              y: 30,
-              opacity: 0,
+              x: -50,
             }}
             animate={{
-              y: 0,
-              opacity: 1,
+              x: 20,
             }}
             exit={{
-              y: 50,
+              x: -50,
+              opacity: 0,
             }}
           >
-            <Button
-              className="font-light"
+            <HiArrowDownCircle
+              className="w-10 h-10 cursor-pointer"
               onClick={() => {
                 bodyRef?.current?.scrollTo({
                   top: bodyRef.current.scrollHeight,
                   behavior: "smooth",
                 });
               }}
-            >
-              Scroll to bottom
-            </Button>
+            />
           </motion.div>
         )}
       </AnimatePresence>
