@@ -99,7 +99,6 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
       <Avatar user={otherUser} />
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
-          <span className="absolute inset-0" aria-hidden="true" />
           <div className="flex justify-between items-center">
             <p className="text-md text-gray-900 truncate flex-1">
               {data.name || otherUser.name}
