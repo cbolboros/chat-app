@@ -1,5 +1,5 @@
-import Sidebar from "@/components/sidebar/Sidebar";
 import ConversationListContainer from "@/app/conversations/components/ConversationListContainer";
+import Sidebar from "@/components/sidebar/Sidebar";
 
 export default function ConversationsLayout({
   children,

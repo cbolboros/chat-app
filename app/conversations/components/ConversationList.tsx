@@ -6,18 +6,19 @@ import useConversation from "@/app/hooks/useConversation";
 import clsx from "clsx";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import ConversationItem from "@/app/conversations/components/ConversationItem";
-import { useSession } from "next-auth/react";
 import { pusherClient } from "@/lib/pusher";
 import EmptyConversationList from "@/app/conversations/components/EmptyConversationList";
 import { TypingHandlerProps } from "@/app/conversations/[conversationId]/components/TypingContainer";
+import { Session } from "next-auth";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
+  session: Session;
 }
 const ConversationList: React.FC<ConversationListProps> = ({
   initialItems,
+  session,
 }) => {
-  const session = useSession();
   const [items, setItems] = useState<FullConversationType[]>(initialItems);
   const router = useRouter();
   const [conversationTyping, setConversationTyping] = useState<string>("");
@@ -25,8 +26,8 @@ const ConversationList: React.FC<ConversationListProps> = ({
   const { conversationId, isOpen } = useConversation();
 
   const pusherKey = useMemo(() => {
-    return session.data?.user?.email;
-  }, [session.data?.user?.email]);
+    return session.user?.email;
+  }, [session.user?.email]);
 
   useEffect(() => {
     if (!pusherKey) return;
@@ -128,6 +129,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
             <ConversationItem
               key={item.id}
               data={item}
+              session={session}
               isTyping={
                 conversationTyping === item.id && conversationId !== item.id
               }

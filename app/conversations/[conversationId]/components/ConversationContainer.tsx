@@ -5,10 +5,12 @@ import Header from "@/app/conversations/[conversationId]/components/Header";
 import getConversationById from "@/app/actions/getConversationById";
 import getMessages from "@/app/actions/getMessages";
 import EmptyState from "@/components/EmptyState";
+import getSession from "@/app/actions/getSession";
 
 const conversationContainer = async ({ params }: any) => {
   const conversation = await getConversationById(params.conversationId);
   const messages = await getMessages(params.conversationId);
+  const session = await getSession();
 
   if (!conversation) {
     return (
@@ -22,7 +24,7 @@ const conversationContainer = async ({ params }: any) => {
 
   return (
     <>
-      <Header conversation={conversation!} />
+      <Header conversation={conversation!} session={session!} />
       <Body initialMessages={messages} />
       <Form />
       <TypingContainer />

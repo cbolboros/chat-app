@@ -2,6 +2,8 @@ import { FullMessageType } from "@/app/types";
 import Image from "next/image";
 import Link from "next/link";
 import YouTube from "react-youtube";
+import { useRef } from "react";
+import Skeleton from "react-loading-skeleton";
 
 interface MessageBodyProps {
   data: FullMessageType;
@@ -9,6 +11,8 @@ interface MessageBodyProps {
 }
 
 const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
+  const skeletonRef = useRef<HTMLSpanElement>(null);
+  const iframeRef = useRef<HTMLSpanElement>(null);
   const getYoutubeId = (url: string) => {
     const youtubeRegex =
       /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)|youtu\.be\/)([\w-]{11})(?:\S+)?$/;
@@ -49,15 +53,30 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
 
     if (youtubeLinks.length > 0) {
       bodyItems.push(
-        <YouTube
-          key="youtube-video"
-          className="max-w-full aspect-video"
-          opts={iFrameOptions}
-          onReady={() => {
-            bottomRef?.current?.scrollIntoView();
-          }}
-          videoId={getYoutubeId(youtubeLinks[youtubeLinks.length - 1])}
-        />
+        <span
+          key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1])}
+          ref={skeletonRef}
+        >
+          <Skeleton height={300} className="w-full" />
+        </span>
+      );
+      bodyItems.push(
+        <span
+          ref={iframeRef}
+          className="hidden"
+          key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1]) + "1"}
+        >
+          <YouTube
+            className="max-w-full aspect-video"
+            opts={iFrameOptions}
+            onReady={() => {
+              iframeRef?.current?.classList.remove("hidden");
+              skeletonRef?.current?.classList.add("hidden");
+              bottomRef?.current?.scrollIntoView();
+            }}
+            videoId={getYoutubeId(youtubeLinks[youtubeLinks.length - 1])}
+          />
+        </span>
       );
     } else if (data.image) {
       return (
@@ -71,7 +90,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       );
     }
 
-    return <>{bodyItems}</>;
+    return <div>{bodyItems}</div>;
   };
 
   return (

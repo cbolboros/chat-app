@@ -4,7 +4,6 @@ import { HiChevronLeft } from "react-icons/hi";
 import { useMemo } from "react";
 import Link from "next/link";
 import { Conversation, User } from "@prisma/client";
-import userOtherUser from "@/app/hooks/useOtherUser";
 import useActiveList from "@/app/hooks/useActiveList";
 import Avatar from "@/components/Avatar";
 import { Button } from "@/components/ui/button";
@@ -17,16 +16,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 interface HeaderProps {
   conversation: Conversation & {
     users: User[];
   };
+  session?: Session;
 }
 
-const Header: React.FC<HeaderProps> = ({ conversation }) => {
+const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
   const router = useRouter();
-  const otherUser = userOtherUser(conversation);
+  const otherUser = conversation.users.find(
+    (user) => user.email !== session?.user?.email
+  );
 
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
@@ -83,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
           {/*)}*/}
           <Avatar user={otherUser} />
           <div className="flex flex-col">
-            <div>{conversation.name || otherUser.name}</div>
+            <div>{conversation.name || otherUser?.name}</div>
             <div className="text-sm font-light text-neutral-500">
               {statusText}
             </div>
