@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { throttle } from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiArrowDownCircle } from "react-icons/hi2";
+import { Button } from "@/components/ui/button";
 
 interface ScrollToBottomContainerProps {
   bodyRef: React.RefObject<HTMLDivElement>;
@@ -27,33 +28,64 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
     };
   }, [bodyRef, isShowScrollButton]);
   return (
-    <div className="absolute bottom-20 flex w-full">
-      <AnimatePresence>
-        {isShowScrollButton && (
-          <motion.div
-            initial={{
-              x: -50,
-            }}
-            animate={{
-              x: 20,
-            }}
-            exit={{
-              x: -50,
-              opacity: 0,
-            }}
-          >
-            <HiArrowDownCircle
-              className="w-10 h-10 cursor-pointer"
-              onClick={() => {
-                bodyRef?.current?.scrollTo({
-                  top: bodyRef.current.scrollHeight,
-                  behavior: "smooth",
-                });
+    <div className="absolute lg:left-1/2 lg:-translate-x-1/2 bottom-20 flex">
+      <div className="hidden lg:block">
+        <AnimatePresence>
+          {isShowScrollButton && (
+            <motion.div
+              initial={{
+                y: 50,
               }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+              animate={{
+                y: 0,
+              }}
+              exit={{
+                y: 50,
+                opacity: 0,
+              }}
+            >
+              <Button
+                onClick={() => {
+                  bodyRef?.current?.scrollTo({
+                    top: bodyRef.current.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                Scroll To Bottom
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="lg:hidden block">
+        <AnimatePresence>
+          {isShowScrollButton && (
+            <motion.div
+              initial={{
+                x: "110vw",
+              }}
+              animate={{
+                x: "90vw",
+              }}
+              exit={{
+                x: "110vw",
+                opacity: 0,
+              }}
+            >
+              <HiArrowDownCircle
+                className="w-8 h-8 cursor-pointer"
+                onClick={() => {
+                  bodyRef?.current?.scrollTo({
+                    top: bodyRef.current.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

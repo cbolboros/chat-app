@@ -81,7 +81,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="w-4"></div>
+            <div className="w-4 h-4">
+              <div className="w-4 h-4 invisible"></div>
+            </div>
           </div>
         )}
         {isPreviousSameUser && (
@@ -106,7 +108,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 </Tooltip>
               </div>
             )}
-            <div className="w-4"></div>
+            <div className="w-4 h-4">
+              <div className="w-4 h-4 invisible"></div>
+            </div>
           </div>
         )}
         <div className="flex gap-1 w-full items-end">
@@ -114,7 +118,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
             <MessageBody data={data} bottomRef={bottomRef} />
           </div>
-          {!isLast && isOwnMessage && <div className="w-4 h4"></div>}
+          {!isLast && isOwnMessage && (
+            <div className="w-4 h-4">
+              <div className="w-4 h-4 invisible"></div>
+            </div>
+          )}
           {isLast && isOwnMessage && seenList.length === 0 && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -130,7 +138,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
           {isLast && isOwnMessage && seenList.length > 0 && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <div>
+                <div className="w-4">
                   <HiMiniEye className="text-slate-400" />
                 </div>
               </TooltipTrigger>

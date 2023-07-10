@@ -17,11 +17,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
   placeholder,
   required,
   register,
-  errors,
   onInputChange,
 }) => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full flex-1">
       <input
         id={id}
         type={type}

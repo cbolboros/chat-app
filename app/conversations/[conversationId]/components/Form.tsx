@@ -6,18 +6,12 @@ import axios from "axios";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "@/app/conversations/[conversationId]/components/MessageInput";
 import { CldUploadButton } from "next-cloudinary";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { throttle } from "lodash";
-import { User } from "@prisma/client";
-import { useSession } from "next-auth/react";
 
 const Form = () => {
   const { conversationId } = useConversation();
-  const session = useSession();
-
-  const [userTyping, setUserTyping] = useState<User | null>(null);
-  const isNotOwnUserTyping = userTyping?.email !== session.data?.user?.email;
 
   const {
     register,
@@ -59,7 +53,7 @@ const Form = () => {
   }, [conversationId]);
 
   return (
-    <div className="px-6 py-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full z-10">
+    <div className="p-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full z-10">
       <CldUploadButton
         options={{
           maxFiles: 1,
@@ -83,7 +77,7 @@ const Form = () => {
         />
         <button
           type="submit"
-          className="rounded-lg hover:bg-neutral-100 p-2 cursor-pointer transition"
+          className="rounded-lg hover:bg-neutral-100 cursor-pointer transition"
         >
           <HiPaperAirplane size={24} />
         </button>
