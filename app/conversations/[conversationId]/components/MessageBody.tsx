@@ -31,7 +31,11 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
         if (item.match(urlRegex)) {
           return (
             <span key={index}>
-              <Link className="underline" target="_blank" href={item}>
+              <Link
+                className="lg:text-sm underline"
+                target="_blank"
+                href={item}
+              >
                 {item}
               </Link>
               &nbsp;
@@ -90,7 +94,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       );
     }
 
-    return <div>{bodyItems}</div>;
+    return <div className="text-[10px] lg:text-sm">{bodyItems}</div>;
   };
 
   return (

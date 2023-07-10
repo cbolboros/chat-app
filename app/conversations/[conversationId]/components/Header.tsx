@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
             cursor-pointer
           "
           >
-            <HiChevronLeft size={32} />
+            <HiChevronLeft className="lg:w-8 lg:h-8 w-4 h-4" />
           </Link>
           {/*{conversation.isGroup ? (*/}
           {/*  <AvatarGroup users={conversation.users} />*/}
@@ -86,25 +86,34 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
           {/*)}*/}
           <Avatar user={otherUser} />
           <div className="flex flex-col">
-            <div>{conversation.name || otherUser?.name}</div>
-            <div className="text-sm font-light text-neutral-500">
+            <div className="text-xs lg:text-sm">
+              {conversation.name || otherUser?.name}
+            </div>
+            <div className="text-xs lg:text-sm font-light text-neutral-500">
               {statusText}
             </div>
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon" variant="ghost">
-              <HiEllipsisHorizontal size={24} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuItem onClick={deleteConversation}>
-              <HiOutlineTrash size={16} className="mr-2" />
-              <span>Delete conversation</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="md:hidden">
+          <Button size="icon" variant="ghost">
+            <HiOutlineTrash className="lg:w-8 lg:h-8 w-4 h-4" />
+          </Button>
+        </div>
+        <div className="hidden md:block">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <HiEllipsisHorizontal size={24} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem onClick={deleteConversation}>
+                <HiOutlineTrash size={16} className="mr-2" />
+                <span>Delete conversation</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </>
   );
