@@ -13,7 +13,7 @@ import {
 import Avatar from "@/components/Avatar";
 
 interface DesktopSidebarProps {
-  currentUser: User;
+  currentUser?: User;
 }
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
