@@ -38,7 +38,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
             </span>
           );
         }
-        return <span key={index}>{item}&nbsp;</span>;
+        return <>{item}&nbsp;</>;
       }) || [];
 
     return { bodyItems, youtubeLinks };
@@ -63,7 +63,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       bodyItems.push(
         <span
           ref={iframeRef}
-          className="hidden"
+          className="hidden w-full h-full block"
           key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1]) + "1"}
         >
           <YouTube
@@ -90,7 +90,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       );
     }
 
-    return <div>{bodyItems}</div>;
+    return <div className="break-words">{bodyItems}</div>;
   };
 
   return (

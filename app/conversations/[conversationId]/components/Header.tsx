@@ -96,7 +96,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
         </div>
         <div className="md:hidden">
           <Button size="icon" variant="ghost">
-            <HiOutlineTrash className="lg:w-8 lg:h-8 w-4 h-4" />
+            <HiOutlineTrash className="lg:w-8 lg:h-8 w-6 h-6" />
           </Button>
         </div>
         <div className="hidden md:block">
