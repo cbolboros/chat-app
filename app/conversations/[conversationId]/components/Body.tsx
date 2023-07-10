@@ -8,11 +8,13 @@ import axios from "axios";
 import { pusherClient } from "@/lib/pusher";
 import { isSameMinute } from "date-fns";
 import ScrollToBottomContainer from "@/app/conversations/[conversationId]/components/ScrollToBottomContainer";
+import { Session } from "next-auth";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
+  session: Session;
 }
-const Body: React.FC<BodyProps> = ({ initialMessages }) => {
+const Body: React.FC<BodyProps> = ({ initialMessages, session }) => {
   const [messages, setMessages] = useState(initialMessages);
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -69,6 +71,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
       <div className="flex-1 bg-[#f5f5f5] overflow-y-auto p-4" ref={bodyRef}>
         {messages.map((message, index) => (
           <MessageItem
+            session={session}
             isLast={index === messages.length - 1}
             isNextSameUser={
               messages[index + 1]?.sender?.id === message.sender.id

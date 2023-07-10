@@ -1,7 +1,6 @@
 "use client";
 
 import { FullMessageType } from "@/app/types";
-import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import Avatar from "@/components/Avatar";
 import { HiMiniEye, HiOutlineCheckCircle } from "react-icons/hi2";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { format, isToday } from "date-fns";
 import MessageBody from "@/app/conversations/[conversationId]/components/MessageBody";
+import { Session } from "next-auth";
 
 interface MessageItemProps {
   data: FullMessageType;
@@ -20,6 +20,7 @@ interface MessageItemProps {
   isNextSameUser?: boolean;
   isMessageSameMinute?: boolean;
   bottomRef?: React.RefObject<HTMLDivElement>;
+  session: Session;
 }
 const MessageItem: React.FC<MessageItemProps> = ({
   data,
@@ -28,10 +29,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
   isNextSameUser,
   isMessageSameMinute,
   bottomRef,
+  session,
 }) => {
-  const session = useSession();
-
-  const isOwnMessage = session?.data?.user?.email === data?.sender?.email;
+  const isOwnMessage = session?.user?.email === data?.sender?.email;
   const seenList = (data.seen || [])
     .filter((user) => user.email !== data?.sender?.email)
     .map((user) => user.name)

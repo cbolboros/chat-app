@@ -25,7 +25,7 @@ const conversationContainer = async ({ params }: any) => {
   return (
     <>
       <Header conversation={conversation!} session={session!} />
-      <Body initialMessages={messages} />
+      <Body initialMessages={messages} session={session!} />
       <Form />
       <TypingContainer />
     </>
