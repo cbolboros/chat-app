@@ -1,7 +1,7 @@
 "use client";
 
 import { HiChevronLeft } from "react-icons/hi";
-import { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { Conversation, User } from "@prisma/client";
 import useActiveList from "@/app/hooks/useActiveList";
@@ -17,6 +17,10 @@ import {
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
+import { AnimatePresence, motion } from "framer-motion";
+import * as Dialog from "@radix-ui/react-dialog";
+import useMeasure from "react-use-measure";
+import { Loader2 } from "lucide-react";
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -27,6 +31,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  let [ref, { height }] = useMeasure();
   const otherUser = conversation.users.find(
     (user) => user.email !== session?.user?.email
   );
@@ -42,11 +49,15 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
   }, [conversation, isActive]);
 
   const deleteConversation = () => {
+    setIsDeleting(true);
     axios.delete(`/api/conversations/${conversation.id}`).then(() => {
+      setIsDeleting(false);
       router.push("/conversations");
       router.refresh();
     });
   };
+
+  console.log(height);
 
   return (
     <>
@@ -95,9 +106,50 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
           </div>
         </div>
         <div className="md:hidden">
-          <Button size="icon" variant="ghost">
-            <HiOutlineTrash className="lg:w-8 lg:h-8 w-6 h-6" />
-          </Button>
+          <Dialog.Root onOpenChange={setOpen}>
+            <Dialog.Trigger className="rounded p-2 hover:bg-gray-200">
+              <HiEllipsisHorizontal className="w-4 h-4" />
+            </Dialog.Trigger>
+
+            <AnimatePresence>
+              {open && (
+                <Dialog.Portal forceMount>
+                  <Dialog.Overlay className="fixed inset-0 bg-black/50 z-20" />
+                  <Dialog.Content
+                    ref={ref}
+                    asChild
+                    className="w-full flex justify-center left-0 z-30 fixed bg-white text-gray-800 p-4 shadow rounded-md"
+                  >
+                    <motion.div
+                      initial={{
+                        top: "100%",
+                      }}
+                      animate={{
+                        top: `calc(100% - ${height}px)`,
+                      }}
+                      exit={{
+                        top: "100%",
+                      }}
+                    >
+                      <Button
+                        disabled={isDeleting}
+                        variant="destructive"
+                        className="w-full"
+                        onClick={deleteConversation}
+                      >
+                        {isDeleting ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <HiOutlineTrash className="w-4 h-4 mr-2" />
+                        )}
+                        <span>Delete conversation</span>
+                      </Button>
+                    </motion.div>
+                  </Dialog.Content>
+                </Dialog.Portal>
+              )}
+            </AnimatePresence>
+          </Dialog.Root>
         </div>
         <div className="hidden md:block">
           <DropdownMenu>
