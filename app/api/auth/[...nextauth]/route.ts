@@ -36,7 +36,7 @@ export const authOptions: AuthOptions = {
         }
         const isValid = await bcrypt.compare(
           credentials?.password,
-          user.hashedPassword
+          user.hashedPassword,
         );
         if (!isValid) {
           throw new Error("Wrong password.");

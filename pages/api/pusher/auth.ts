@@ -6,7 +6,7 @@ import { pusherServer } from "@/lib/pusher";
 
 export default async function handler(
   request: NextApiRequest,
-  response: NextApiResponse
+  response: NextApiResponse,
 ) {
   const session = await getServerSession(request, response, authOptions);
 

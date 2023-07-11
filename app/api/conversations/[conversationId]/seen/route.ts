@@ -78,7 +78,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     await pusherServer.trigger(
       conversationId!,
       "message:update",
-      updatedMessage
+      updatedMessage,
     );
 
     return new NextResponse("Success");

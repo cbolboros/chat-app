@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const EmptyConversationList = () => {
   return (
-    <div className="text-gray-400 ">
+    <div className="text-gray-400">
       <div>No conversations. </div>
       <div>
         Select a{" "}

@@ -10,7 +10,7 @@ interface IParams {
 
 export async function DELETE(
   request: Request,
-  { params }: { params: IParams }
+  { params }: { params: IParams },
 ) {
   try {
     const { conversationId } = params;
@@ -47,7 +47,7 @@ export async function DELETE(
         pusherServer.trigger(
           user.email,
           "conversations:remove",
-          existingConversation
+          existingConversation,
         );
       }
     });

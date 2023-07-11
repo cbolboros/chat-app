@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   let [ref, { height }] = useMeasure();
   const otherUser = conversation.users.find(
-    (user) => user.email !== session?.user?.email
+    (user) => user.email !== session?.user?.email,
   );
 
   const { members } = useActiveList();
@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
         shadow-sm
       "
       >
-        <div className="flex gap-3 items-center">
+        <div className="flex items-center gap-3">
           <Link
             href="/conversations"
             className="
@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
             cursor-pointer
           "
           >
-            <HiChevronLeft className="lg:w-8 lg:h-8 w-4 h-4" />
+            <HiChevronLeft className="h-4 w-4 lg:h-8 lg:w-8" />
           </Link>
           {/*{conversation.isGroup ? (*/}
           {/*  <AvatarGroup users={conversation.users} />*/}
@@ -98,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
             <div className="text-xs lg:text-sm">
               {conversation.name || otherUser?.name}
             </div>
-            <div className="text-xs lg:text-sm font-light text-neutral-500">
+            <div className="text-xs font-light text-neutral-500 lg:text-sm">
               {statusText}
             </div>
           </div>
@@ -106,17 +106,17 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
         <div className="md:hidden">
           <Dialog.Root onOpenChange={setOpen}>
             <Dialog.Trigger className="rounded p-2 hover:bg-gray-200">
-              <HiEllipsisHorizontal className="w-4 h-4" />
+              <HiEllipsisHorizontal className="h-4 w-4" />
             </Dialog.Trigger>
 
             <AnimatePresence>
               {open && (
                 <Dialog.Portal forceMount>
-                  <Dialog.Overlay className="fixed inset-0 bg-black/50 z-20" />
+                  <Dialog.Overlay className="fixed inset-0 z-20 bg-black/50" />
                   <Dialog.Content
                     ref={ref}
                     asChild
-                    className="w-full flex justify-center left-0 z-30 fixed bg-white text-gray-800 p-4 shadow rounded-md"
+                    className="fixed left-0 z-30 flex w-full justify-center rounded-md bg-white p-4 text-gray-800 shadow"
                   >
                     <motion.div
                       initial={{
@@ -138,7 +138,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
                         {isDeleting ? (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         ) : (
-                          <HiOutlineTrash className="w-4 h-4 mr-2" />
+                          <HiOutlineTrash className="mr-2 h-4 w-4" />
                         )}
                         <span>Delete conversation</span>
                       </Button>
@@ -156,8 +156,11 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
                 <HiEllipsisHorizontal size={24} />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem onClick={deleteConversation}>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={deleteConversation}
+              >
                 <HiOutlineTrash size={16} className="mr-2" />
                 <span>Delete conversation</span>
               </DropdownMenuItem>

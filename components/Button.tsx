@@ -49,7 +49,7 @@ const button: React.FC<ButtonProps> = ({
           "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
         !secondary &&
           !danger &&
-          "bg-black hover:bg-opacity-5 focus-visible:outline-black"
+          "bg-black hover:bg-opacity-5 focus-visible:outline-black",
       )}
     >
       {disabled && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

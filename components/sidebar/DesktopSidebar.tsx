@@ -54,12 +54,13 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
       </nav>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button>
+          <button className="ring-transparent">
             <Avatar width={48} height={48} user={currentUser} />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" sideOffset={15} className="w-56">
+        <DropdownMenuContent align="start">
           <DropdownMenuItem
+            className="cursor-pointer"
             onClick={() => {
               signOut();
             }}

@@ -55,10 +55,10 @@ const TypingContainer = () => {
             exit={{
               y: 50,
             }}
-            className="absolute left-20 bottom-20 w-fit flex items-center gap-2"
+            className="absolute bottom-20 left-20 flex w-fit items-center gap-2"
           >
             <Avatar user={userTyping!} />
-            <span className="text-gray-500 text-sm">{userTyping?.name}</span>
+            <span className="text-sm text-gray-500">{userTyping?.name}</span>
             <TypingIndicator />
           </motion.div>
         )}

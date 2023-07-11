@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { format, isThisYear, isToday } from "date-fns";
 import clsx from "clsx";
@@ -9,6 +9,14 @@ import { FullConversationType } from "@/app/types";
 import TypingIndicator from "@/app/conversations/[conversationId]/components/TypingIndicator";
 import Avatar from "@/components/Avatar";
 import { Session } from "next-auth";
+import { HiEllipsisHorizontal, HiOutlineTrash } from "react-icons/hi2";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import axios from "axios";
 
 interface ConversationItemProps {
   data: FullConversationType;
@@ -24,9 +32,18 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
   session,
 }) => {
   const otherUser = data.users.find(
-    (user) => user.email !== session?.user?.email
+    (user) => user.email !== session?.user?.email,
   );
   const router = useRouter();
+
+  const conversationRef = useRef<HTMLDivElement>(null);
+
+  const deleteConversation = () => {
+    axios.delete(`/api/conversations/${data.id}`).then(() => {
+      router.push("/conversations");
+      router.refresh();
+    });
+  };
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
@@ -79,11 +96,13 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
 
   return (
     <div
+      ref={conversationRef}
       onClick={handleClick}
       className={clsx(
         `
         w-full 
         relative 
+        select-none
         flex 
         items-center 
         space-x-3 
@@ -91,15 +110,20 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         rounded-lg
         transition
         cursor-pointer
+        group
         `,
-        selected ? "bg-neutral-100" : "bg-white hover:bg-neutral-50"
+        selected ? "bg-neutral-100" : "bg-white hover:bg-neutral-50",
       )}
     >
       <Avatar user={otherUser!} />
       <div className="min-w-0 flex-1">
-        <div className="focus:outline-none">
-          <div className="flex justify-between items-center">
-            <p className="text-md text-gray-900 truncate flex-1">
+        <div className="group-hover:hidden focus:outline-none group-[.dropdown-active]:hidden">
+          <div className="flex items-center justify-between">
+            <p
+              className={`text-md text-gray-900 truncate flex-1 ${
+                !hasSeen ? "font-bold" : ""
+              }`}
+            >
               {data.name || otherUser?.name}
             </p>
             {lastMessage?.createdAt && (
@@ -117,7 +141,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
                     ? "p"
                     : isThisYear(new Date(lastMessage?.createdAt))
                     ? "dd-MMM"
-                    : "dd-MMM-yy"
+                    : "dd-MMM-yy",
                 )}
               </p>
             )}
@@ -129,17 +153,82 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
               truncate 
               text-xs
               `,
-                hasSeen ? "text-gray-500" : "text-black font-medium"
+                hasSeen
+                  ? "text-gray-500 group-hover:text-gray-900"
+                  : "text-black font-bold",
               )}
             >
               {lastMessageText}
             </p>
           )}
           {isTyping && (
-            <div className="h-4 flex items-center">
+            <div className="flex h-4 items-center">
               <TypingIndicator width={6} height={6} />{" "}
             </div>
           )}
+        </div>
+        <div
+          className={`focus:outline-none hidden group-[.dropdown-active]:flex group-hover:flex`}
+        >
+          <div className="w-full group-hover:w-[85%] group-[.dropdown-active]:w-[85%]">
+            <p
+              className={`text-md text-gray-900 truncate flex-1 ${
+                !hasSeen ? "font-bold" : ""
+              }`}
+            >
+              {data.name || otherUser?.name}
+            </p>
+            {!isTyping && (
+              <p
+                className={clsx(
+                  `
+              truncate 
+              text-xs
+              `,
+                  hasSeen
+                    ? "text-gray-500 group-hover:text-gray-900"
+                    : "text-black font-bold",
+                )}
+              >
+                {lastMessageText}
+              </p>
+            )}
+          </div>
+          <div className="ml-2 flex-1 self-center">
+            <DropdownMenu
+              onOpenChange={(isOpen) => {
+                if (isOpen) {
+                  conversationRef?.current?.classList.add("dropdown-active");
+                }
+              }}
+            >
+              <DropdownMenuTrigger asChild>
+                <button className="p-1">
+                  <HiEllipsisHorizontal className="h-6 w-6" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                onAnimationEndCapture={(
+                  event: React.AnimationEvent<HTMLDivElement>,
+                ) => {
+                  if (event.animationName === "exit") {
+                    conversationRef?.current?.classList.remove(
+                      "dropdown-active",
+                    );
+                  }
+                }}
+              >
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={deleteConversation}
+                >
+                  <HiOutlineTrash size={16} className="mr-2" />
+                  <span>Delete conversation</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </div>

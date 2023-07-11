@@ -38,7 +38,7 @@ export function InputForm() {
         message: "Username must be at least 2 characters.",
       })
       .optional()
-      .refine((data) => {
+      .refine(() => {
         if (variant === "LOGIN") {
           return true;
         }
@@ -102,7 +102,7 @@ export function InputForm() {
           signIn("credentials", {
             ...data,
             redirect: false,
-          })
+          }),
         )
         .then((response) => {
           if (response?.error) {
@@ -216,7 +216,7 @@ export function InputForm() {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or with</span>
+                  <span className="bg-white px-2 text-gray-500">Or with</span>
                 </div>
               </div>
               <div className="mt-6 flex gap-2">
@@ -230,13 +230,13 @@ export function InputForm() {
                 />
               </div>
             </div>
-            <div className="mt-6 flex gap-2 justify-center text-sm px-2 text-gray-500">
+            <div className="mt-6 flex justify-center gap-2 px-2 text-sm text-gray-500">
               <div>
                 {variant === "LOGIN"
                   ? "New to Chatter?"
                   : "Already have an account?"}
               </div>
-              <div onClick={toggleVariant} className="underline cursor-pointer">
+              <div onClick={toggleVariant} className="cursor-pointer underline">
                 {variant === "LOGIN" ? "Create an account" : "Sign in"}
               </div>
             </div>

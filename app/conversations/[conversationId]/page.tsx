@@ -6,8 +6,8 @@ interface IParams {
 
 const ChatId = ({ params }: { params: IParams }) => {
   return (
-    <div className="lg:pl-80 h-full">
-      <div className="h-full flex flex-col overflow-hidden relative">
+    <div className="h-full lg:pl-80">
+      <div className="relative flex h-full flex-col overflow-hidden">
         <ConversationContainer params={params} />
       </div>
     </div>

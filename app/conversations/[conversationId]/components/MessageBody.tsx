@@ -32,7 +32,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
           return (
             <span key={index}>
               <Link
-                className="underline text-sky-600 hover:text-sky-900"
+                className="text-sky-600 underline hover:text-sky-900"
                 target="_blank"
                 href={item}
               >
@@ -62,16 +62,16 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
           ref={skeletonRef}
         >
           <Skeleton height={300} className="w-full" />
-        </span>
+        </span>,
       );
       bodyItems.push(
         <span
           ref={iframeRef}
-          className="hidden w-full h-full block"
+          className="block hidden h-full w-full"
           key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1]) + "1"}
         >
           <YouTube
-            className="max-w-full aspect-video"
+            className="aspect-video max-w-full"
             opts={iFrameOptions}
             onReady={() => {
               iframeRef?.current?.classList.remove("hidden");
@@ -80,7 +80,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
             }}
             videoId={getYoutubeId(youtubeLinks[youtubeLinks.length - 1])}
           />
-        </span>
+        </span>,
       );
     } else if (data.image) {
       return (
@@ -89,7 +89,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
           height="100"
           width="100"
           src={data.image}
-          className="object-fit cursor-pointer transition translate"
+          className="cursor-pointer transition object-fit translate"
         />
       );
     }
@@ -98,7 +98,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
   };
 
   return (
-    <div className="w-full text-gray-800 font-light">{parseMessageBody()}</div>
+    <div className="w-full font-light text-gray-800">{parseMessageBody()}</div>
   );
 };
 

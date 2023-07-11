@@ -48,7 +48,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages, session }) => {
           }
 
           return currentMessage;
-        })
+        }),
       );
     };
 
@@ -81,7 +81,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages, session }) => {
             }
             isMessageSameMinute={isSameMinute(
               new Date(messages[index - 1]?.createdAt),
-              new Date(message.createdAt)
+              new Date(message.createdAt),
             )}
             key={message.id}
             data={message}

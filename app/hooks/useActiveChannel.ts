@@ -19,7 +19,7 @@ const useActiveChannel = () => {
       const initialMembers: string[] = [];
 
       members.each((member: Record<string, any>) =>
-        initialMembers.push(member.id)
+        initialMembers.push(member.id),
       );
       set(initialMembers);
     };

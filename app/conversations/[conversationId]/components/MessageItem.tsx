@@ -41,13 +41,13 @@ const MessageItem: React.FC<MessageItemProps> = ({
     isNextSameUser && "mb-0.5",
     !isNextSameUser && "pb-1",
     isOwnMessage && "justify-end",
-    !isMessageSameMinute && "pt-2"
+    !isMessageSameMinute && "pt-2",
   );
   const body = clsx("flex flex-col max-w-[75%]", isOwnMessage && "items-end");
   const message = clsx(
     "text-sm w-fit overflow-hidden",
     isOwnMessage ? "bg-[#e8ebfa] ml-auto" : "bg-white",
-    data.image ? "rounded-md p-0" : "rounded-md py-2 px-3"
+    data.image ? "rounded-md p-0" : "rounded-md py-2 px-3",
   );
 
   const formatDate = (date: Date) => {
@@ -60,9 +60,9 @@ const MessageItem: React.FC<MessageItemProps> = ({
       {isPreviousSameUser && !isOwnMessage && <div className="w-8"></div>}
       <div className={body}>
         {!isPreviousSameUser && (
-          <div className="flex items-center gap-2 mb-1">
+          <div className="mb-1 flex items-center gap-2">
             {!isOwnMessage && (
-              <div className="text-xs text-gray-500 truncate">
+              <div className="truncate text-xs text-gray-500">
                 {data.sender.name}
               </div>
             )}
@@ -75,14 +75,14 @@ const MessageItem: React.FC<MessageItemProps> = ({
                   <p>
                     {format(
                       new Date(data.createdAt),
-                      "EEEE, MMMM dd, y hh:mm a"
+                      "EEEE, MMMM dd, y hh:mm a",
                     )}
                   </p>
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="w-4 h-4">
-              <div className="w-4 h-4 invisible"></div>
+            <div className="h-4 w-4">
+              <div className="invisible h-4 w-4"></div>
             </div>
           </div>
         )}
@@ -101,26 +101,26 @@ const MessageItem: React.FC<MessageItemProps> = ({
                     <p>
                       {format(
                         new Date(data.createdAt),
-                        "EEEE, MMMM dd, y hh:mm a"
+                        "EEEE, MMMM dd, y hh:mm a",
                       )}
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </div>
             )}
-            <div className="w-4 h-4">
-              <div className="w-4 h-4 invisible"></div>
+            <div className="h-4 w-4">
+              <div className="invisible h-4 w-4"></div>
             </div>
           </div>
         )}
-        <div className="flex gap-1 w-full items-end">
+        <div className="flex w-full items-end gap-1">
           <div className={message}>
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
             <MessageBody data={data} bottomRef={bottomRef} />
           </div>
           {!isLast && isOwnMessage && (
-            <div className="w-4 h-4">
-              <div className="w-4 h-4 invisible"></div>
+            <div className="h-4 w-4">
+              <div className="invisible h-4 w-4"></div>
             </div>
           )}
           {isLast && isOwnMessage && seenList.length === 0 && (

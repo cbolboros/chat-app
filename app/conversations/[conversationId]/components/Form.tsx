@@ -53,7 +53,7 @@ const Form = () => {
   }, [conversationId]);
 
   return (
-    <div className="p-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full z-10">
+    <div className="z-10 flex w-full items-center gap-2 border-t bg-white p-4 lg:gap-4">
       <CldUploadButton
         options={{
           maxFiles: 1,
@@ -65,7 +65,7 @@ const Form = () => {
       </CldUploadButton>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex items-center gap-2 lg:gap-4 w-full"
+        className="flex w-full items-center gap-2 lg:gap-4"
       >
         <MessageInput
           id="message"
@@ -73,11 +73,11 @@ const Form = () => {
           register={register}
           errors={errors}
           required
-          placeholder="Type a message"
+          placeholder="Type a new message"
         />
         <button
           type="submit"
-          className="rounded-lg hover:bg-neutral-100 cursor-pointer transition"
+          className="cursor-pointer rounded-lg transition hover:bg-neutral-100"
         >
           <HiPaperAirplane size={24} />
         </button>

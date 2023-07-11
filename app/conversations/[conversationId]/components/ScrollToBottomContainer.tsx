@@ -28,7 +28,7 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
     };
   }, [bodyRef, isShowScrollButton]);
   return (
-    <div className="absolute lg:left-1/2 lg:-translate-x-1/2 bottom-20 flex">
+    <div className="absolute bottom-20 flex lg:left-1/2 lg:-translate-x-1/2">
       <div className="hidden lg:block">
         <AnimatePresence>
           {isShowScrollButton && (
@@ -58,7 +58,7 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
           )}
         </AnimatePresence>
       </div>
-      <div className="lg:hidden block">
+      <div className="block lg:hidden">
         <AnimatePresence>
           {isShowScrollButton && (
             <motion.div
@@ -74,7 +74,7 @@ const ScrollToBottomContainer: React.FC<ScrollToBottomContainerProps> = ({
               }}
             >
               <HiArrowDownCircle
-                className="w-8 h-8 cursor-pointer"
+                className="h-8 w-8 cursor-pointer"
                 onClick={() => {
                   bodyRef?.current?.scrollTo({
                     top: bodyRef.current.scrollHeight,

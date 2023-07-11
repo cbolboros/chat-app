@@ -19,41 +19,35 @@ const Avatar: React.FC<AvatarProps> = ({ user, width, height }) => {
   const avatarHeight = Math.round((width || 32) / 4);
 
   return (
-    <div className="relative h-fit">
-      <div
-        className="
-        relative
-        inline-block
-        overflow-hidden
-        rounded-full
-      "
-      >
+    <>
+      <div className="relative inline-block h-fit overflow-hidden">
         <Image
+          className="rounded-full"
           src={user?.image || "/images/placeholder.jpg"}
           alt="Avatar"
           width={width || 32}
           height={height || 32}
         />
-      </div>
-      {isActive ? (
-        <span
-          style={{
-            width: `${avatarWidth}px`,
-            height: `${avatarHeight}px`,
-          }}
-          className={`
+        {isActive ? (
+          <span
+            style={{
+              width: `${avatarWidth}px`,
+              height: `${avatarHeight}px`,
+            }}
+            className={`
             absolute
             block
             rounded-full
             bg-green-500
             ring-2
             ring-white
-            bottom-1
-            right-0.5
+            bottom-0
+            right-0
           `}
-        />
-      ) : null}
-    </div>
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
 

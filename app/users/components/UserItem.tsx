@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 import Avatar from "@/components/Avatar";
@@ -11,17 +11,11 @@ interface UserItemPros {
 
 const UserItem: React.FC<UserItemPros> = ({ data }) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = useCallback(() => {
-    setIsLoading(true);
-
-    axios
-      .post("/api/conversations", { userId: data.id })
-      .then((data) => {
-        router.push(`/conversations/${data.data.id}`);
-      })
-      .finally(() => setIsLoading(false));
+    axios.post("/api/conversations", { userId: data.id }).then((data) => {
+      router.push(`/conversations/${data.data.id}`);
+    });
   }, [data, router]);
 
   return (
@@ -46,8 +40,8 @@ const UserItem: React.FC<UserItemPros> = ({ data }) => {
         <div className="min-w-0 flex-1">
           <div className="focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
-            <div className="flex justify-between items-center">
-              <p className="text-md text-gray-900 truncate">{data.name}</p>
+            <div className="flex items-center justify-between">
+              <p className="truncate text-gray-900 text-md">{data.name}</p>
             </div>
           </div>
         </div>

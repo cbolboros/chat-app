@@ -23,7 +23,7 @@ const useRoutes = () => {
         active: pathname === "/users",
       },
     ],
-    [pathname, conversationId]
+    [pathname, conversationId],
   );
 };
 

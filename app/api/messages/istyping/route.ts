@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const conversation = await getConversationById(conversationId);
     const otherUser = conversation?.users.filter(
-      (user) => user.email !== currentUser?.email
+      (user) => user.email !== currentUser?.email,
     )[0];
 
     if (otherUser?.email) {

@@ -17,7 +17,7 @@ export const HeaderSkeleton = () => {
         shadow-sm
       "
     >
-      <div className="flex gap-3 items-center">
+      <div className="flex items-center gap-3">
         <Skeleton circle width={32} height={32} />
         <div className="flex flex-col">
           <Skeleton width={200} />
