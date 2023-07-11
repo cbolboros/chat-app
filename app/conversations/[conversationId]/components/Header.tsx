@@ -57,8 +57,6 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
     });
   };
 
-  console.log(height);
-
   return (
     <>
       <div
