@@ -38,11 +38,11 @@ export function InputForm() {
         message: "Username must be at least 2 characters.",
       })
       .optional()
-      .refine(() => {
-        if (variant === "LOGIN") {
+      .refine((value) => {
+        if (variant === "LOGIN" || value) {
           return true;
         }
-        if (variant === "REGISTER") {
+        if (!value && variant === "REGISTER") {
           return false;
         }
       }, "Required"),
