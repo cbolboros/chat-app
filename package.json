@@ -31,11 +31,10 @@
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
     "eslint": "8.43.0",
-    "eslint-config-next": "13.4.7",
     "framer-motion": "^10.12.18",
     "lodash": "^4.17.21",
     "lucide-react": "^0.257.0",
-    "next": "13.4.7",
+    "next": "^13.4.9",
     "next-auth": "^4.22.1",
     "next-cloudinary": "^4.13.0",
     "next-superjson-plugin": "^0.5.8",
@@ -44,8 +43,8 @@
     "prisma": "^4.16.1",
     "pusher": "^5.1.3",
     "pusher-js": "^8.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.1",
     "react-icons": "^4.10.1",
     "react-loading-skeleton": "^3.3.1",
@@ -62,6 +61,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/lodash": "^4.14.195",
+    "eslint-config-next": "^13.4.9",
     "prettier": "^3.0.0"
   }
 }
