@@ -8,9 +8,11 @@ import EmptyState from "@/components/EmptyState";
 import getSession from "@/app/actions/getSession";
 
 const conversationContainer = async ({ params }: any) => {
-  const conversation = await getConversationById(params.conversationId);
-  const messages = await getMessages(params.conversationId);
-  const session = await getSession();
+  const [conversation, messages, session] = await Promise.all([
+    getConversationById(params.conversationId),
+    getMessages(params.conversationId),
+    getSession(),
+  ]);
 
   if (!conversation) {
     return (

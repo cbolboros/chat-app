@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import axios from "axios";
+import useDeleteConversation from "@/app/hooks/useDeleteConversation";
 
 interface ConversationItemProps {
   data: FullConversationType;
@@ -38,12 +38,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
 
   const conversationRef = useRef<HTMLDivElement>(null);
 
-  const deleteConversation = () => {
-    axios.delete(`/api/conversations/${data.id}`).then(() => {
-      router.push("/conversations");
-      router.refresh();
-    });
-  };
+  const { deleteConversation } = useDeleteConversation();
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
@@ -221,7 +216,9 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
               >
                 <DropdownMenuItem
                   className="cursor-pointer"
-                  onClick={deleteConversation}
+                  onClick={() => {
+                    deleteConversation(data);
+                  }}
                 >
                   <HiOutlineTrash size={16} className="mr-2" />
                   <span>Delete conversation</span>

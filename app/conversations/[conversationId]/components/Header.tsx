@@ -14,13 +14,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import { AnimatePresence, motion } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import useMeasure from "react-use-measure";
 import { Loader2 } from "lucide-react";
+import useDeleteConversation from "@/app/hooks/useDeleteConversation";
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -32,11 +32,12 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   let [ref, { height }] = useMeasure();
   const otherUser = conversation.users.find(
     (user) => user.email !== session?.user?.email,
   );
+
+  const { deleteConversation, isDeleting } = useDeleteConversation();
 
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
@@ -47,15 +48,6 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
 
     return isActive ? "Active" : "Offline";
   }, [conversation, isActive]);
-
-  const deleteConversation = () => {
-    setIsDeleting(true);
-    axios.delete(`/api/conversations/${conversation.id}`).then(() => {
-      setIsDeleting(false);
-      router.push("/conversations");
-      router.refresh();
-    });
-  };
 
   return (
     <>
@@ -133,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
                         disabled={isDeleting}
                         variant="destructive"
                         className="w-full"
-                        onClick={deleteConversation}
+                        onClick={() => deleteConversation(conversation)}
                       >
                         {isDeleting ? (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -159,7 +151,9 @@ const Header: React.FC<HeaderProps> = ({ conversation, session }) => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={deleteConversation}
+                onClick={() => {
+                  deleteConversation(conversation);
+                }}
               >
                 <HiOutlineTrash size={16} className="mr-2" />
                 <span>Delete conversation</span>
