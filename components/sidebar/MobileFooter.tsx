@@ -1,7 +1,7 @@
 "use client";
 
-import useConversation from "@/app/hooks/useConversation";
-import useRoutes from "@/app/hooks/useRoutes";
+import useConversation from "@/temp_app/hooks/useConversation";
+import useRoutes from "@/temp_app/hooks/useRoutes";
 import MobileItem from "@/components/sidebar/MobileItem";
 
 const MobileFooter = () => {
