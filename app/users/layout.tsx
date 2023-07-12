@@ -1,5 +1,4 @@
 import Sidebar from "@/components/sidebar/Sidebar";
-import UserList from "@/app/users/components/UserList";
 
 export default function UsersLayout({
   children,
@@ -9,7 +8,7 @@ export default function UsersLayout({
   return (
     <Sidebar>
       <div className="h-full">
-        <UserList />
+        {/*<UserList />*/}
         {children}
       </div>
     </Sidebar>

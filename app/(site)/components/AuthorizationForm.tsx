@@ -58,6 +58,10 @@ export function InputForm() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const toggleVariant = useCallback(() => {
@@ -171,7 +175,7 @@ export function InputForm() {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem id={"name"}>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input {...field} />
