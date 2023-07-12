@@ -3,8 +3,10 @@ import getConversations from "@/app/actions/getConversations";
 import getSession from "@/app/actions/getSession";
 
 const ConversationListContainer = async () => {
-  const conversations = await getConversations();
-  const session = await getSession();
+  const [conversations, session] = await Promise.all([
+    getConversations(),
+    getSession(),
+  ]);
   return <ConversationList initialItems={conversations} session={session!} />;
 };
 
