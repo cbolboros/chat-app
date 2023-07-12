@@ -1,5 +1,4 @@
 import UserItem from "@/temp_app/users/components/UserItem";
-import EmptyUserList from "@/temp_app/users/components/EmptyUserList";
 import getUsers from "@/temp_app/actions/getUsers";
 
 const UserList = async () => {
@@ -10,11 +9,13 @@ const UserList = async () => {
         <div className="flex-col">
           <div className="py-4 text-2xl font-bold text-neutral-800">Users</div>
         </div>
-        {users.length > 0 ? (
-          users.map((item) => <UserItem key={item.id} data={item} />)
-        ) : (
-          <EmptyUserList />
-        )}
+        {users.length > 0 &&
+          users.map((item) => <UserItem key={item.id} data={item} />)}
+        {/*{users.length > 0 ? (*/}
+        {/*  users.map((item) => <UserItem key={item.id} data={item} />)*/}
+        {/*) : (*/}
+        {/*  <EmptyUserList />*/}
+        {/*)}*/}
       </div>
     </aside>
   );
