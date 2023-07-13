@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 import Avatar from "@/components/Avatar";
@@ -11,8 +11,10 @@ interface UserItemPros {
 
 const UserItem: React.FC<UserItemPros> = ({ data }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleClick = useCallback(() => {
+    setLoading(true);
     axios.post("/api/conversations", { userId: data.id }).then((data) => {
       router.push(`/conversations/${data.data.id}`);
     });
@@ -41,7 +43,9 @@ const UserItem: React.FC<UserItemPros> = ({ data }) => {
           <div className="focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
             <div className="flex items-center justify-between">
-              <p className="truncate text-gray-900 text-md">{data.name}</p>
+              <p className="truncate text-gray-900 text-md">
+                {loading ? "Loading..." : data.name}
+              </p>
             </div>
           </div>
         </div>

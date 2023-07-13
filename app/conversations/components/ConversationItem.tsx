@@ -38,7 +38,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
 
   const conversationRef = useRef<HTMLDivElement>(null);
 
-  const { deleteConversation } = useDeleteConversation();
+  const { isDeleting, deleteConversation } = useDeleteConversation();
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
@@ -119,7 +119,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
                 !hasSeen ? "font-bold" : ""
               }`}
             >
-              {data.name || otherUser?.name}
+              {isDeleting ? "Deleting..." : data.name || otherUser?.name}
             </p>
             {lastMessage?.createdAt && (
               <p
