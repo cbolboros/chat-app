@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import AuthSocialButton from "@/app/(site)/components/AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import { signIn, useSession } from "next-auth/react";
@@ -49,12 +49,6 @@ export function InputForm() {
     email: z.string().email(),
     password: z.string().min(5, { message: "Minimum 5 characters." }),
   });
-
-  useEffect(() => {
-    if (session?.status === "authenticated") {
-      router.push("/users");
-    }
-  }, [router, session?.status]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -105,7 +99,6 @@ export function InputForm() {
         .then(() =>
           signIn("credentials", {
             ...data,
-            redirect: false,
           }),
         )
         .then((response) => {
