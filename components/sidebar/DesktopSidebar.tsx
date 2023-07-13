@@ -3,7 +3,6 @@ import useRoutes from "@/app/hooks/useRoutes";
 import DesktopItem from "@/components/sidebar/DesktopItem";
 import { signOut } from "next-auth/react";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
-import { User } from "@prisma/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +12,7 @@ import {
 import Avatar from "@/components/Avatar";
 
 interface DesktopSidebarProps {
-  currentUser: User;
+  currentUser: any;
 }
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
