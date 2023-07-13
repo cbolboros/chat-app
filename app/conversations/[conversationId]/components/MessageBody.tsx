@@ -94,7 +94,11 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
       );
     }
 
-    return <div className="break-words">{bodyItems}</div>;
+    return (
+      <div key={Math.random()} className="break-words">
+        {bodyItems}
+      </div>
+    );
   };
 
   return (

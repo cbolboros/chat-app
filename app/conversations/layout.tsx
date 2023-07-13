@@ -1,4 +1,3 @@
-import ConversationListContainer from "@/app/conversations/components/ConversationListContainer";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 export default function ConversationsLayout({
@@ -8,10 +7,7 @@ export default function ConversationsLayout({
 }) {
   return (
     <Sidebar>
-      <div className="h-full">
-        <ConversationListContainer />
-        {children}
-      </div>
+      <div className="h-full">{children}</div>
     </Sidebar>
   );
 }

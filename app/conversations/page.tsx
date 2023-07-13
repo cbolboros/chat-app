@@ -1,19 +1,17 @@
-"use client";
-
-import clsx from "clsx";
-
 import EmptyState from "@/components/EmptyState";
-import useConversation from "@/app/hooks/useConversation";
+import ConversationListContainer from "@/app/conversations/components/ConversationListContainer";
+import { Suspense } from "react";
 
 const Home = () => {
-  const { isOpen } = useConversation();
-
   return (
-    <div
-      className={clsx("lg:pl-80 h-full lg:block", isOpen ? "block" : "hidden")}
-    >
-      <EmptyState />
-    </div>
+    <>
+      <div className="lg:pl-80 h-full lg:block hidden">
+        <EmptyState />
+      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ConversationListContainer />
+      </Suspense>
+    </>
   );
 };
 
