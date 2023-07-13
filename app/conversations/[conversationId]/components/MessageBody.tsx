@@ -57,19 +57,12 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
 
     if (youtubeLinks.length > 0) {
       bodyItems.push(
-        <span
-          key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1])}
-          ref={skeletonRef}
-        >
-          <Skeleton height={300} className="w-full" />
+        <span ref={skeletonRef}>
+          <Skeleton className="w-full aspect-video" />
         </span>,
       );
       bodyItems.push(
-        <span
-          ref={iframeRef}
-          className="block hidden h-full w-full"
-          key={getYoutubeId(youtubeLinks[youtubeLinks.length - 1]) + "1"}
-        >
+        <span ref={iframeRef} className="block hidden h-full w-full">
           <YouTube
             className="aspect-video max-w-full"
             opts={iFrameOptions}
@@ -95,8 +88,10 @@ const MessageBody: React.FC<MessageBodyProps> = ({ data, bottomRef }) => {
     }
 
     return (
-      <div key={Math.random()} className="break-words">
-        {bodyItems}
+      <div className="break-words">
+        {bodyItems.map((item, index) => {
+          return <div key={index}>{item}</div>;
+        })}
       </div>
     );
   };

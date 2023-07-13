@@ -116,7 +116,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
         <div className="flex w-full items-end gap-1">
           <div className={message}>
             {/*      <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />*/}
-            <MessageBody data={data} bottomRef={bottomRef} />
+            <MessageBody key={data.id} data={data} bottomRef={bottomRef} />
           </div>
           {!isLast && isOwnMessage && (
             <div className="h-4 w-4">

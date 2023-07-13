@@ -1,5 +1,4 @@
 import EmptyState from "@/components/EmptyState";
-import ConversationListContainer from "@/app/conversations/components/ConversationListContainer";
 
 const Home = () => {
   return (
@@ -7,7 +6,6 @@ const Home = () => {
       <div className="lg:pl-80 h-full lg:block hidden">
         <EmptyState />
       </div>
-      <ConversationListContainer />
     </>
   );
 };
